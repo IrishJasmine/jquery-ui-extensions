@@ -93,14 +93,22 @@
 
          // Our items have HTML tags.  The default rendering uses text()
          // to set the content of the <a> tag.  We need html().
-         input.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+          input.data("autocomplete")._renderItem = function(ul, item) {
+            var listItem;
+            if (item.label == "<strong></strong>") {
+                listItem = $("<li></li>")
+                      .data("item.autocomplete", item)
+                      .append("<a><br></a>")
+                      .appendTo(ul);
+            } else {
+                listItem = $("<li></li>")
+                      .data("item.autocomplete", item)
+                      .append("<a>" + item.label + "</a>")
+                      .appendTo(ul);
+            }
 
-               return $( "<li>" )
-                           .attr('class', item.option.className)
-                           .append( $( "<a>" ).html( item.label ) )
-                           .appendTo( ul );
-
-            };
+            return listItem;
+        };
 
          this._on( this._events );
 
